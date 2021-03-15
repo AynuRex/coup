@@ -1,20 +1,25 @@
 import React from "react";
-import style from './Header.module.css'
+import './Header.css'
 
-const Header = (props)=>{
-
+const Header = (props) => {
     return (
-        <div className={style.header}>
-        <div>
-            COUPE
+        <div className="header">
+            <div className=" ">COUPE</div>
+            <HeaderMenu/>
         </div>
-        <div  >
-            GETTING STARTED
-        </div>
-        <div  >
-            COUPE
-        </div>
-    </div>)
+    )
+}
+
+const HeaderMenu= (props)=>{
+
+    return(
+        <ul className="right-float">
+            <li>Getting started</li>
+            <li>Download</li>
+            <li className="log-in">LOG IN</li>
+            <li className="sign-in">SIGN UP</li>
+        </ul>
+    )
 }
 
 export default Header;

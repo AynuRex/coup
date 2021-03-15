@@ -1,10 +1,39 @@
 .header{
     background-color: #22344F;
-    height: 50px;
+    height: 45px;
+    padding: 10px;
+
 }
 .header div{
     color: white;
     display:inline;
-    margin: 10px;
     text-align: center;
+    margin: 20px;
+}
+
+
+.right-float{
+    float:right;
+}
+
+.right-float *{
+    display:inline;
+    color: white;
+    text-align: center;
+    margin: 20px;
+    padding: 5px;
+}
+
+.log-in{
+    border-radius: 3px;
+    background-color: #B6D5E6;
+    color: #227FB4;
+    margin: 10px;
+}
+
+.sign-in{
+    border-radius: 3px;
+    background-color: #227FB4;
+    color: #B6D5E6;
+    margin: 10px;
 }
