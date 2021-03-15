@@ -1,0 +1,10 @@
+.header{
+    background-color: #22344F;
+    height: 50px;
+}
+.header div{
+    color: white;
+    display:inline;
+    margin: 10px;
+    text-align: center;
+}
