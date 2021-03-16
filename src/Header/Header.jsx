@@ -4,7 +4,7 @@ import './Header.css'
 const Header = (props) => {
     return (
         <div className="header">
-            <div className=" ">COUPE</div>
+            <div className=" ">COUP</div>
             <HeaderMenu/>
         </div>
     )

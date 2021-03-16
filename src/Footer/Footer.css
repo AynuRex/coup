@@ -1,13 +1,15 @@
 .footer{
     background-color: #ECF4F8;
 }
-.column-container{
-    column-count: 5;
-    column-gap: 150px;
+.column-container {
+    display: grid;
+    margin: auto;
+    grid-template-rows: 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     padding: 10px;
 }
 .column-container div{
-   margin:60px;
+    margin:0 15px;
 }
 .column-container  li{
     list-style-type:none;
