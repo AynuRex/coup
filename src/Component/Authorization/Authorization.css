@@ -1,0 +1,35 @@
+.auth-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.auth-right-col{
+    padding: 10% 5% ;
+}
+.auth-form-top{
+    background-color: #B6D5E6;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.auth-form-bottom{
+    background-color: #B6D5E6;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px;
+}
+.auth-form-head{
+    text-align: center;
+    margin: 5px;
+
+}
+.my-button{
+    background-color: #227FB4;
+    color: white;
+    border-radius: 7px;
+    border-color: white;
+}
+
+.button-container{
+    margin-top: 10px;
+}

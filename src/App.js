@@ -1,12 +1,13 @@
 import React from "react";
-import Header from "./Header/Header";
-import Footer from "./Footer/Footer";
+import Header from "./Component/Header/Header";
+import Footer from "./Component/Footer/Footer";
+import LoginPage from "./Component/Authorization/LogIn";
 
 function App() {
     return (
         <div>
-            <Header/>
-            <Footer/>
+           <Header/>
+           <Footer/>
         </div>
     );
 }
