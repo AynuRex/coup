@@ -1,0 +1,41 @@
+.left-menu {
+    padding: 5px;
+    background-color: #ECF4F8;
+    grid-area: menu;
+    margin-right: 3px;
+}
+
+.left-menu a{
+    display: block;
+    color: #22344F;
+    padding-right: 30px;
+}
+
+.left-menu a:hover{
+    text-decoration: none;
+}
+
+
+.left-menu a.selected{
+    background-color: #B6D5E6;
+}
+
+.left-menu-bottom-void{
+    grid-area: void;
+}
+.auth-page-content{
+    grid-area: content;
+}
+
+.authed-page-grid-container{
+    padding: 20px;
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: 125px auto;
+
+    grid-template-areas:
+    "menu content"
+    "void content";
+}
+
+
