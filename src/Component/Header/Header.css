@@ -4,23 +4,19 @@
     padding: 10px;
 
 }
-.header div{
-    color: white;
-    display:inline;
-    text-align: center;
-    margin: 20px;
-}
+
 
 
 .right-float{
     float:right;
 }
 
-.right-float *{
+
+.header-link{
     display:inline;
     color: white;
     text-align: center;
-    margin: 20px;
+    margin: 15px;
     padding: 5px;
 }
 
@@ -29,6 +25,7 @@
     background-color: #B6D5E6;
     color: #227FB4;
     margin: 10px;
+    padding: 5px;
 }
 
 .sign-in{
@@ -36,4 +33,20 @@
     background-color: #227FB4;
     color: #B6D5E6;
     margin: 10px;
+    padding: 5px;
+}
+
+.sign-in:hover{
+    color: #22344F;
+    text-decoration: none;
+}
+
+.log-in:hover{
+    color: white;
+    text-decoration: none;
+}
+
+.header-link:hover{
+    color: #B6D5E6;
+    text-decoration: none;
 }
