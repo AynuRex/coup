@@ -33,30 +33,29 @@ let initialState= {
             userCount: 123,
             creationDate:new Date()
         }
-    ]
-
-
+    ],
+    priority: 0
 }
 
 
 const groupReducer= (state = initialState, action)=>
 {
-    switch (action)
+    switch (action.type)
     {
         //TODO this reducer doesnt work/ REPAIR
         case ADD_NEW_GROUP:
         {
-            return {
-                ...state,
-                groups: [...state.groups].push(
-                    {   name: action.name,
-                        privilege: 2,
-                        userCount: 1,
-                        creationDate: new Date()
-                    }
-                )
 
+            let newState={
+                ...state,
+                groups: [...state.groups,
+                    {  name: action.name,
+                    privilege: 2,
+                    userCount: 1,
+                    creationDate: new Date()
+                }]
             }
+            return newState;
 
         }
         default:

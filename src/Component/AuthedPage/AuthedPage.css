@@ -41,7 +41,7 @@
 
 .list-container{
     display: grid;
-    grid-template-areas: "a a a a";
+    grid-template-areas: "a a a a a";
     grid-gap: 30px;
     grid-auto-rows: max-content;
     padding:0 30px;
@@ -55,6 +55,7 @@
     padding: 5px;
 
 }
+
 .group-form-name{
     background-color: #ECF4F8;
     text-align: center;
@@ -67,9 +68,19 @@
     border-radius: 3px;
     display: inline;
     padding:0 5px;
-
-
 }
+
+form button{
+    background-color: #227FB4;
+    color: white;
+    border-radius:3px;
+    border-style:none
+}
+
+form button:hover{
+    color: #22344F;
+}
+
 
 
 

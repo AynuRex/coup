@@ -4,7 +4,7 @@ import Footer from "../Footer/Footer";
 import React from "react";
 import './AuthedPage.css'
 import HomePage from "./HomePage";
-import GroupsPage from "./GroupsPage";
+import GroupsPage from "./GroupPage/GroupsPage";
 import FormsPage from "./FormsPage";
 import Settings from "./Settings";
 
