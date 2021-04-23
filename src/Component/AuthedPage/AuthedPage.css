@@ -9,12 +9,12 @@
     display: block;
     color: #22344F;
     padding-right: 30px;
+    width: 7vw;
 }
 
 .left-menu a:hover{
     text-decoration: none;
 }
-
 
 .left-menu a.selected{
     background-color: #B6D5E6;
@@ -25,6 +25,7 @@
 }
 .auth-page-content{
     grid-area: content;
+    width: 80vw;
 }
 
 .authed-page-grid-container{
@@ -32,7 +33,7 @@
     display: inline-grid;
     grid-template-columns: auto auto;
     grid-template-rows: 125px auto;
-
+    width: 100vw;
     grid-template-areas:
     "menu content"
     "void content";
@@ -45,8 +46,14 @@
     grid-gap: 30px;
     grid-auto-rows: max-content;
     padding:0 30px;
-    width: 90vw;
 
+
+}
+
+@media screen and (max-width: 1300px){
+ .list-container{
+     grid-template-areas: "a a a a"
+ }
 }
 
 .group-form-container{
@@ -81,7 +88,49 @@ form button:hover{
     color: #22344F;
 }
 
+.filter-container{
+    margin :10px 30px;
+    padding: 10px 20px;
+    background-color: #ECF4F8;
+    border-radius: 5px;
+}
+.priority-filter-box{
+    display: inline;
+    margin: 0 5%;
+}
 
+.priority-filter{
+    display: inline;
+    margin: 0 10px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 3px;
+}
+ .priority-filter.active{
+    background-color: #B6D5E6;
+ }
 
+.priority-filter:hover{
+    text-decoration: underline;
+}
 
+.group-nav-menu{
+    margin :10px 30px;
+    padding: 20px;
+    background-color: #ECF4F8;
+    border-radius: 5px;
+}
 
+.group-nav-menu-item{
+    display: inline;
+    margin: 10px;
+
+}
+
+.group-nav-menu-button{
+    float: right;
+    background-color: #227FB4;
+    color:#ECF4F8;
+    border-radius: 3px;
+
+}

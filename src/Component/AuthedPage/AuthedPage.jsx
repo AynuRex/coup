@@ -7,6 +7,7 @@ import HomePage from "./HomePage";
 import GroupsPage from "./GroupPage/GroupsPage";
 import FormsPage from "./FormsPage";
 import Settings from "./Settings";
+import GroupPage from "./GroupPage/GroupPage";
 
 
 
@@ -19,14 +20,15 @@ const AuthedPage = (props) => {
                 <div className="left-menu-bottom-void"></div>
                 <div className="auth-page-content">
                     <Switch>
-                        <Route path="/home" component={HomePage}/>
-                        <Route path="/groups" component = {GroupsPage}/>
-                        <Route path="/forms" component ={FormsPage}/>
-                        <Route path="/settings" component ={Settings}/>
+                        <Route exact path="/home" component={HomePage}/>
+                        <Route exact path="/groups" component = {GroupsPage}/>
+                        <Route exact path="/groups/:groupID" render = {()=><GroupPage/>}/>
+                        <Route exact path="/forms" component ={FormsPage}/>
+                        <Route exact path="/settings" component ={Settings}/>
+
                     </Switch>
                 </div>
             </div>
-
             <Footer/>;
         </div>
     )

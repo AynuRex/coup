@@ -1,6 +1,12 @@
 import Footer from "../Footer/Footer";
-import React from "react";
-import {NavLink} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {NavLink, Redirect} from "react-router-dom";
+import {connect} from "react-redux";
+import {loginAC} from "../../Redux/auth-reducer";
+
+
+
+
 
 const AuthPage = (props) => {
     return (
@@ -10,7 +16,7 @@ const AuthPage = (props) => {
                     <NavLink to="/" >COUP</NavLink>
                 </div>
                 <div className="auth-right-col">
-                    <AuthForm authPageText={props.authPageText }/>
+                    <ConnectedAuthForm {...props} />
                 </div>
             </div>
             <Footer/>
@@ -20,6 +26,38 @@ const AuthPage = (props) => {
 
 
 const AuthForm = (props)=>{
+    const [login,setLogin]= useState("");
+    const [password,setPassword]= useState("")
+
+    const [redirect, setRedirect]= useState(false)
+    //set redirect to false when authPage opens
+    useEffect(()=>{
+        setRedirect(false)
+    },[])
+
+    const onPasswordChange=(e)=>{
+        setPassword(e.target.value)
+    }
+    const onLoginChange=(e)=>{
+        setLogin(e.target.value)
+    }
+
+    const onAuthSubmit = ()=>{
+       props.authSubmit(login,password).then
+       (response=>{console.log(response)
+           props.loginAC();
+           setRedirect(true)
+       }
+       )
+           .catch(error=>alert(error))
+
+    }
+
+    if(redirect)
+    {
+        return <Redirect to='home'/>
+    }
+
     return (
         <div>
             <div className="auth-form-bottom">
@@ -28,11 +66,12 @@ const AuthForm = (props)=>{
                 </div>
                 <div>
                     <div>Логин</div>
-                    <input/>
+                    <input value={login} onChange={onLoginChange} />
                     <div>Пароль</div>
-                    <input/>
+                    <input value={password} type="password" onChange={onPasswordChange}/>
                     <div className="button-container">
-                        <button className="my-button">{props.authPageText.buttonText}</button>
+                        <button className="my-button" onClick={onAuthSubmit}>{props.authPageText.buttonText}
+                        </button>
                     </div>
 
 
@@ -45,5 +84,7 @@ const AuthForm = (props)=>{
         </div>
     )
 }
+const ConnectedAuthForm =connect(null, {loginAC})(AuthForm)
+
 
 export default AuthPage;
