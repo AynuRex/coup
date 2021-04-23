@@ -3,6 +3,9 @@ import {connect} from "react-redux";
 import '../AuthedPage.css'
 import {addNewGroup} from "../../../Redux/group-reducer";
 import Modal from "./Modal";
+import sortDesc from "./../../../images/sort_descending.svg"
+import sortAsc from "./../../../images/sort_ascending.svg"
+import {compose} from "redux";
 
 const useValidation = (value, validations) => {
     const [isEmpty, setEmpty] = useState(true)
@@ -71,17 +74,78 @@ const useInput = (initialValue, validations) => {
 
 const GroupsPage = (props) => {
 
-    let groupNames = [];
-    props.groupPage.groups.map((group) => {
-            groupNames.push(group.name)
-        }
-    )
+    let groupNames = props.groupPage.groups.map((group) => {
+        return group.name
+    });
 
+    const [redirect, setRedirect]= useState(false)
     const [modalActive, setModalActive] = useState(false);
+    const [searchGroup, setSearchGroup] = useState("");
+    const [creatorFilter, setCreatorFilter] = useState(true);
+    const [adminFilter, setAdminFilter] = useState(true);
+    const [memberFilter, setMemberFilter] = useState(true);
+    const [sortParameter, setSortParameter] = useState("name");
+    const [orderBy, setOrderBy] = useState("desc");
+    const [displayedGroups, setDisplayedGroups] = useState(props.groupPage.groups);
+
+
     const groupName = useInput('', {isEmpty: true, UniqFields: groupNames, minLength: 5});
 
     let onAddNewGroup = () => {
         setModalActive(true);
+    }
+
+
+    //when new groups comes from backend
+    useEffect(() => {
+            filterGroups()
+        },
+        [props.groupPage.groups, adminFilter, memberFilter, creatorFilter, searchGroup])
+
+    useEffect(() => {
+        sortGroups(displayedGroups)
+    }, [sortParameter, orderBy])
+
+
+    const filterGroups = () => {
+
+        const filteredGroup = props.groupPage.groups.filter((group) => {
+            return ((group.privilege === 0 && memberFilter) ||
+                (group.privilege === 1 && adminFilter) ||
+                (group.privilege === 2 && creatorFilter))
+                && (searchGroup === "" || group.name.toLowerCase().includes(searchGroup.toLowerCase()))
+        })
+        sortGroups(filteredGroup)
+    }
+
+    const sortGroups = (groups) => {
+
+        const sortOrder = orderBy === "desc" ? -1 : 1;
+        const sortFunction = (a, b) => {
+            let result = (a[sortParameter] < b[sortParameter]) ? -1 : (a[sortParameter] > b[sortParameter]) ? 1 : 0;
+            return result * sortOrder;
+        }
+        const sortedGroups = [...groups].sort(sortFunction);
+        setDisplayedGroups(sortedGroups)
+    }
+
+    const onChangeSearchGroup = (e) => {
+        setSearchGroup(e.target.value)
+    }
+
+    const sortSelectorHandler = (e) => {
+        switch (e.target.value) {
+            case "По названию":
+                setSortParameter("name")
+                break;
+            case "По количесву участников":
+                setSortParameter("userCount")
+                break;
+            case "По дате создания":
+                setSortParameter("creationDate")
+                break;
+
+        }
     }
     const onCreateNewGroup = (event) => {
 
@@ -93,39 +157,69 @@ const GroupsPage = (props) => {
             setModalActive(false);
         } else//костыль если нажать enter
             setModalActive(true);
+        filterGroups()
+    }
+    const onClickOnGroup = (e) => {
+
     }
 
 
     return (
-<div>
-      <div className="filter-conatiner">
-          <div></div>
-         </div>
-        <div className="list-container">
-
-            <div className="group-form-container" onClick={onAddNewGroup}>
+        <div >
+            <div className="group-nav-menu">
+                <li className="group-nav-menu-item"> Все группы</li>
+                <li className="group-nav-menu-item"> Мои группы</li>
+                <button className="group-nav-menu-button" onClick={onAddNewGroup}> Создать новую группу</button>
             </div>
-            {props.groupPage.groups.map((group) =>
-                <Group groupInfo={group}/>)}
-            <Modal active={modalActive} setActive={setModalActive}>
-                <form onSubmit={onCreateNewGroup} className="addNewGroupForm">
-                    <h2 style={{textAlign: "center"}}>Создание новой группы</h2>
-                    {(groupName.isDirty && groupName.isEmpty) && <div style={{color: "red"}}>Поле пустое</div>}
-                    {(groupName.isDirty && groupName.minLength && !groupName.isEmpty) &&
-                    <div style={{color: "red"}}>Длина должна быть не менее 5 сим.</div>}
-                    {(groupName.isDirty && groupName.isFieldUniq) &&
-                    <div style={{color: "red"}}>Группа с таким именем уже существует</div>}
-                    <input value={groupName.value} onChange={e => groupName.onChange(e)}
-                           onBlur={e => groupName.onBlur(e)}
-                           name="groupName" type="text" placeholder="Введите название группы"
-                           style={{display: "block", margin: "10px 0", width: "40%"}}/>
-                    <button type="button" onClick={() => setModalActive(false)} style={{display: "block", float: "left"}}>Отмена
-                    </button>
-                    <button type="submit" style={{float: "right", }}>Создать</button>
-                </form>
-            </Modal>
+            <div className="filter-container">
+                <input placeholder="Поиск группы" value={searchGroup} onChange={onChangeSearchGroup}/>
+                <div className="priority-filter-box">
+                    <li className={creatorFilter ? "priority-filter active" : "priority-filter"}
+                        onClick={() => setCreatorFilter(!creatorFilter)}>Создатель
+                    </li>
+                    <li className={adminFilter ? "priority-filter active" : "priority-filter"}
+                        onClick={() => setAdminFilter(!adminFilter)}>Администратор
+                    </li>
+                    <li className={memberFilter ? "priority-filter active" : "priority-filter"}
+                        onClick={() => setMemberFilter(!memberFilter)}>Участник
+                    </li>
+                </div>
+                <select onChange={sortSelectorHandler}>
+                    <option>По названию</option>
+                    <option>По дате создания</option>
+                    <option>По дате посещения</option>
+                    <option>По количесву участников</option>
+                </select>
+                <img onClick={() => {
+                    orderBy === "desc" ? setOrderBy("asc") : setOrderBy("desc")
+                }}
+                     src={orderBy === "desc" ? sortDesc : sortAsc}
+                     style={{margin: "0 5px", borderStyle: "solid", padding: "3px", borderRadius: "3px"}}/>
+
+            </div>
+            <div className="list-container">
+                {displayedGroups.map((group) =>
+                    <Group onClick={onClickOnGroup} groupInfo={group}/>)}
+                <Modal active={modalActive} setActive={setModalActive}>
+                    <form onSubmit={onCreateNewGroup} className="addNewGroupForm">
+                        <h2 style={{textAlign: "center"}}>Создание новой группы</h2>
+                        {(groupName.isDirty && groupName.isEmpty) && <div style={{color: "red"}}>Поле пустое</div>}
+                        {(groupName.isDirty && groupName.minLength && !groupName.isEmpty) &&
+                        <div style={{color: "red"}}>Длина должна быть не менее 5 сим.</div>}
+                        {(groupName.isDirty && groupName.isFieldUniq) &&
+                        <div style={{color: "red"}}>Группа с таким именем уже существует</div>}
+                        <input value={groupName.value} onChange={e => groupName.onChange(e)}
+                               onBlur={e => groupName.onBlur(e)}
+                               name="groupName" type="text" placeholder="Введите название группы"
+                               style={{display: "block", margin: "10px 0", width: "40%"}}/>
+                        <button type="button" onClick={() => setModalActive(false)}
+                                style={{display: "block", float: "left"}}>Отмена
+                        </button>
+                        <button type="submit" style={{float: "right",}}>Создать</button>
+                    </form>
+                </Modal>
+            </div>
         </div>
-</div>
     )
 }
 
@@ -165,4 +259,5 @@ const userCountToString = (userCount) => {
 
 
 let priorityList = ["Участник", "Администратор", "Создатель"]
-export default connect(mapStateToProps, mapDispatchToProps)(GroupsPage);
+export default compose(connect(mapStateToProps, mapDispatchToProps))
+    (GroupsPage);
