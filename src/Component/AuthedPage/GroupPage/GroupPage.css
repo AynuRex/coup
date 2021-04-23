@@ -1,0 +1,52 @@
+.group-name{
+    background-color: #ECF4F8;
+    border-style: solid;
+    border-radius: 3px;
+    padding: 10px;
+    margin-bottom: 10px;
+
+}
+.group-menu{
+    float: right;
+    background-color: #ECF4F8;
+    border-style: solid;
+    border-radius: 3px;
+}
+
+.group-menu-item{
+    margin: 10px;
+}
+
+.group-menu-item.active{
+    background-color: rgba(34,127,180,0.5);
+}
+
+.group-page-home{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: "description userList"
+                        "homePageContent userList ";
+}
+.group-page-home-description{
+    grid-area: description;
+}
+
+.group-page-home-user-list{
+    grid-area:userList;
+    overflow-y: scroll;
+    height: 150px;
+}
+.group-page-home-user-list::-webkit-scrollbar{
+    background-color: #ECF4F8;
+    border-radius: 5px;
+    width: 10px;
+}
+.group-page-home-user-list::-webkit-scrollbar-thumb{
+    background-color: #B6D5E6;
+    border-radius: 5px;
+}
+
+.group-page-home-content{
+    grid-area: homePageContent;
+}
+
