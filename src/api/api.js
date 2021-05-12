@@ -1,6 +1,6 @@
 import * as axios from "axios"
 //import * as FormData from 'form-data'
-const baseURL = "http://c6f907c06364.ngrok.io/"
+const baseURL = "http://1f840657d2c3.ngrok.io"
 
 const instance = axios.create({
     baseURL: baseURL,
@@ -30,5 +30,9 @@ export const authAPI = {
     },
     logout(){
         return instance.delete("auth/login")
+    },
+    me()
+    {
+        return instance.get("auth/me")
     }
 }

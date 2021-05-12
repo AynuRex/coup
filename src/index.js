@@ -6,6 +6,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import store from "./Redux/Store";
+import DataTable from "./Component/AuthedPage/GroupPage/DataTable";
+import './App.css'
 
 
 ReactDOM.render(

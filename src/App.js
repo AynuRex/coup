@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import LoginPage from "./Component/Authorization/LogIn";
 import {BrowserRouter, Route, Switch, Redirect, withRouter} from "react-router-dom";
@@ -7,10 +7,19 @@ import StartPage from "./Component/MainPage/StartPage";
 
 import {connect} from "react-redux";
 import AuthedPage from "./Component/AuthedPage/AuthedPage";
-import Goose from './images/goose.jpg'
+import {authAPI} from "./api/api";
+import {loginAC} from "./Redux/auth-reducer";
+
 
 
 function App(props) {
+
+    useEffect(()=>
+        {
+            authAPI.me().then(()=>props.loginAC())
+        }
+    ,[])
+
     return (
         <BrowserRouter>
             <div>
@@ -56,4 +65,4 @@ export const TestComponent = (props)=>{
 
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps,{loginAC})(App);

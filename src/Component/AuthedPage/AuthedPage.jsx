@@ -50,8 +50,6 @@ const LeftMenu = (props)=>{
                 Настройки
             </NavLink>
         </div>
-
-
     )
 }
 
