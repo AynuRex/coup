@@ -8,7 +8,6 @@ let initialState={
 const authReducer = (state = initialState, action)=>{
     switch (action.type){
         case LOGIN:
-            debugger
             return {
                 ...state,
                 isAuth: true

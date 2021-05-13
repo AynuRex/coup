@@ -11,6 +11,9 @@ export const groupAPI =
     {
         getMainInfo(groupID)  {
             return instance.get(`groups/getMainInfo?id=${groupID}`)
+        },
+        getGroups(){
+            return instance.get('groups/getGroupList')
         }
     }
 

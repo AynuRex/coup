@@ -77,7 +77,7 @@ const GetDataFilter = (props) => {
 const ConcreteFilter = (props) => {
 
     const [titleOptions,setTitleOptions] = useState(dataByUserProgramOptions)
-    const userOptions = props.currentGroup.userList.map((user)=>({value:user, label:user}))
+    const userOptions = props.currentGroup.userList.map((user)=>({value:user, label:user.login}))
     const programOptions = props.currentGroup.programList.map((prog)=>({value:prog, label:prog}))
     const onTableTypeChanged = (obj)=>{
 
@@ -111,10 +111,12 @@ const ConcreteFilter = (props) => {
                     <Select options={userOptions}
                             value={props.currentGroup.getDataFilter.users}
                             onChange = {(obj)=>props.setUserList(obj)}
+                            placeholder = "Выбор пользователей"
                     />
                     <Select options={programOptions}
                             value={props.currentGroup.getDataFilter.programs}
                             onChange = {(obj)=>props.setProgramList(obj)}
+                            placeholder = "Выбор программ"
                     />
                     <DateRangePicker
                         onChange={props.setDateDelta}

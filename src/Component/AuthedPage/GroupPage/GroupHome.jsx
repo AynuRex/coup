@@ -11,7 +11,7 @@ const GroupHome = (props) => {
             <div className="group-page-home-user-list">
                 {
                     props.groupInfo.userList ? props.groupInfo.userList.map((user) => {
-                        return <li>{user}</li>
+                        return <li>{user.login}</li>
                     }) : null
                 }
             </div>

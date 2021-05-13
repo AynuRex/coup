@@ -9,41 +9,11 @@ const SET_TIME_SCALE = "SET_TIME_SCALE"
 const SET_USER_LIST = "SET_USER_LIST"
 const SET_PROGRAM_LIST = "SET_PROGRAM_LIST"
 const SET_DATE_DELTA = "SET_DATE_DELTA"
+const SET_GROUP_LIST = "SET_GROUP_LIST"
 
 
 let initialState = {
-    groups: [
-        {
-            name: "GooseTheFirst",
-            privilege: 1,
-            userCount: 177013,
-            creationDate: new Date()
-        },
-        {
-            name: "GooseTheSecond",
-            privilege: 2,
-            userCount: 1234,
-            creationDate: new Date()
-        },
-        {
-            name: "GooseTheThird",
-            privilege: 0,
-            userCount: 1243,
-            creationDate: new Date()
-        },
-        {
-            name: "GooseTheForth",
-            privilege: 1,
-            userCount: 324,
-            creationDate: new Date()
-        },
-        {
-            name: "GooseTheFive",
-            privilege: 2,
-            userCount: 123,
-            creationDate: new Date()
-        }
-    ],
+    groups: [],
     currentGroup: {
         groupID: null,
         groupName: null,
@@ -223,6 +193,11 @@ const groupReducer = (state = initialState, action) => {
                 }
             }
         }
+        case SET_GROUP_LIST:
+            return {
+                ...state,
+                groups: [...action.groups]
+            }
         default:
             return state;
     }
@@ -235,7 +210,7 @@ const displayFilterOptions = {
 }
 
 const setGroupMainInfo = (groupData)=>({type:SET_GROUP_MAIN_INFO,groupData})
-
+const setGroupList = (groups)=>({type:SET_USER_LIST,groups})
 export const addNewGroup = (name) => ({type: ADD_NEW_GROUP, name})
 export const setMainDisplayFilter = (mainType) => ({type: SET_MAIN_DISPLAY_FILTER, mainType})
 export const setSubDisplayFilter = (subType) => ({type: SET_SUB_DISPLAY_FILTER, subType})
@@ -252,8 +227,11 @@ export const getMainInfo = (groupID) => async (dispatch) => {
 
         dispatch(setGroupMainInfo(response.data));
     })
-
-
+}
+export const getGroups = ()=>async (dispatch)=>{
+     groupAPI.getGroups().then(response=>{
+         dispatch(setGroupList(response.data))
+     })
 }
 
 export default groupReducer;

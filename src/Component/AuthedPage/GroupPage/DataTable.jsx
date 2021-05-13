@@ -82,4 +82,46 @@ const DataTable = (props) => {
     )
 }
 
+const jsonchick = {
+    Columns:[
+        {
+            Header: "User/program",
+            accessor: "user/program"
+        },
+        {
+            Header: "date1",
+            columns:[
+                {
+                    Header: "CPU USAGE",
+                    accessor: "date1-cpu"
+                }, {
+                    Header: "RAM USAGE",
+                    accessor: "date1-ram"
+                }
+
+            ]
+        },{
+            Header: "date2",
+            columns:[
+                {
+                    Header: "CPU USAGE",
+                    accessor: "date2-cpu"
+                }, {
+                    Header: "RAM USAGE",
+                    accessor: "date2-ram"
+                }
+
+            ]
+        },
+
+    ],
+    data: [
+        {"user":"goose","date1-cpu":"15%","date1-ram":"34"},
+        {"user":"Amine","date1-cpu":"100%","date1-ram":"1020"},
+
+
+    ]
+}
+
+
 export default DataTable;

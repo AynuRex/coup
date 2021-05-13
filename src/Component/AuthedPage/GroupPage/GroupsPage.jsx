@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import '../AuthedPage.css'
-import {addNewGroup} from "../../../Redux/group-reducer";
+import {addNewGroup, getGroups} from "../../../Redux/group-reducer";
 import Modal from "./Modal";
 import sortDesc from "./../../../images/sort_descending.svg"
 import sortAsc from "./../../../images/sort_ascending.svg"
 import {compose} from "redux";
+import {Redirect} from "react-router-dom";
 
 const useValidation = (value, validations) => {
     const [isEmpty, setEmpty] = useState(true)
@@ -107,6 +108,10 @@ const GroupsPage = (props) => {
     }, [sortParameter, orderBy])
 
 
+    useEffect(()=>{
+        props.getGroups()
+    },[])
+
     const filterGroups = () => {
 
         const filteredGroup = props.groupPage.groups.filter((group) => {
@@ -159,10 +164,6 @@ const GroupsPage = (props) => {
             setModalActive(true);
         filterGroups()
     }
-    const onClickOnGroup = (e) => {
-
-    }
-
 
     return (
         <div >
@@ -198,8 +199,9 @@ const GroupsPage = (props) => {
 
             </div>
             <div className="list-container">
-                {displayedGroups.map((group) =>
-                    <Group onClick={onClickOnGroup} groupInfo={group}/>)}
+                { displayedGroups.length===0?<div>Список групп пуст</div>:
+                    displayedGroups.map((group) =>
+                    <Group  groupInfo={group}/>)}
                 <Modal active={modalActive} setActive={setModalActive}>
                     <form onSubmit={onCreateNewGroup} className="addNewGroupForm">
                         <h2 style={{textAlign: "center"}}>Создание новой группы</h2>
@@ -224,8 +226,24 @@ const GroupsPage = (props) => {
 }
 
 const Group = ({groupInfo}) => {
+
+   const [redirect,setRedirect] = useState(false)
+
+    const onClickOnGroup = (e) => {
+        setRedirect(true)
+    }
+
+    if(redirect)
+    {
+        return (
+            <Redirect to={"groups/"+groupInfo.id}/>
+        )
+    }
+
+
+
     return (
-        <div className="group-form-container">
+        <div className="group-form-container" onClick={onClickOnGroup}>
             <div className="group-form-name"> {groupInfo.name}</div>
             <div className="group-form-highlighted-field">{priorityList[groupInfo.privilege]}</div>
             <div>{userCountToString(groupInfo.userCount)}</div>
@@ -240,7 +258,7 @@ let mapStateToProps = (state) => {
         groupPage: state.groupPage
     }
 }
-let mapDispatchToProps = {addNewGroup}
+let mapDispatchToProps = {addNewGroup,getGroups}
 
 const dateToString = (date) => {
     return "Создана: " + date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
@@ -253,8 +271,6 @@ const userCountToString = (userCount) => {
     } else {
         return "В группе: " + userCount + " участников"
     }
-
-
 }
 
 
