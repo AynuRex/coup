@@ -1,4 +1,5 @@
 import {groupAPI} from "../api/api";
+
 const ADD_NEW_GROUP = "ADD_NEW_GROUP"
 const SET_MAIN_DISPLAY_FILTER = "SET_MAIN_DISPLAY_FILTER"
 const SET_SUB_DISPLAY_FILTER = "SET_SUB_DISPLAY_FILTER"
@@ -10,6 +11,8 @@ const SET_USER_LIST = "SET_USER_LIST"
 const SET_PROGRAM_LIST = "SET_PROGRAM_LIST"
 const SET_DATE_DELTA = "SET_DATE_DELTA"
 const SET_GROUP_LIST = "SET_GROUP_LIST"
+const SET_DISPLAYED_DATA = "SET_DISPLAYED_DATA"
+const SET_GROUP_ID = "SET_GROUP_ID"
 
 
 let initialState = {
@@ -27,24 +30,27 @@ let initialState = {
             users: [],//list of checked users
             dateDelta: [new Date(), new Date()],// time interval which data will analyse
             programs: [], //list of analysing programs
-            timeScale:  {value: "1 hour", label: "1 час"},//atom value of time
-            tableFilter:{
-                tableType : {value: "dataByUserProgram", label:"Данные по пользователю/программе"},
-                title: {value:"user", label: "По пользователям"}
+            timeScale: {value: 1, label: "1 час"},//atom value of time
+            tableFilter: {
+                tableType: {value: "dataByUserProgram", label: "Данные по пользователю/программе"},
+                title: {value: "user", label: "По пользователям"}
             }
-
+        },
+        displayedData: {
+            dataType: null,
+            data: null
         }
+
     },
 }
 const sendFilter = {
     groupID: 1,
-    displayType:"table",
     users: ["sportLoh", "goose"],
     dateDelta: [new Date(), new Date()],
-    programs: ["dis","genshin Impact"],
-    timeScale: "1 hour",
-    tableFilter:{
-        tableType:"dataByUserProgram",
+    programs: ["dis", "genshin Impact"],
+    timeScale: 1,
+    tableFilter: {
+        tableType: "dataByUserProgram",
         title: "user"
     }
 }
@@ -101,8 +107,8 @@ const groupReducer = (state = initialState, action) => {
             }
 
         }
-        case SET_GROUP_MAIN_INFO:{
-            return{
+        case SET_GROUP_MAIN_INFO: {
+            return {
                 ...state,
                 currentGroup: {
                     ...state.currentGroup,
@@ -114,7 +120,7 @@ const groupReducer = (state = initialState, action) => {
                 }
             }
         }
-        case SET_TABLE_TYPE:{
+        case SET_TABLE_TYPE: {
             return {
                 ...state,
                 currentGroup: {
@@ -123,14 +129,14 @@ const groupReducer = (state = initialState, action) => {
                         ...state.currentGroup.getDataFilter,
                         tableFilter: {
                             tableType: action.tableType,
-                            title: {value:"user", label: "По пользователям"}
+                            title: {value: "user", label: "По пользователям"}
                         }
                     }
 
                 }
             }
         }
-        case SET_TABLE_TITLE:{
+        case SET_TABLE_TITLE: {
             return {
                 ...state,
                 currentGroup: {
@@ -157,7 +163,7 @@ const groupReducer = (state = initialState, action) => {
                     }
                 }
             }
-        case SET_USER_LIST:{
+        case SET_USER_LIST: {
             return {
                 ...state,
                 currentGroup: {
@@ -169,7 +175,7 @@ const groupReducer = (state = initialState, action) => {
                 }
             }
         }
-        case SET_PROGRAM_LIST:{
+        case SET_PROGRAM_LIST: {
             return {
                 ...state,
                 currentGroup: {
@@ -181,7 +187,7 @@ const groupReducer = (state = initialState, action) => {
                 }
             }
         }
-        case SET_DATE_DELTA:{
+        case SET_DATE_DELTA: {
             return {
                 ...state,
                 currentGroup: {
@@ -198,6 +204,45 @@ const groupReducer = (state = initialState, action) => {
                 ...state,
                 groups: [...action.groups]
             }
+        case SET_DISPLAYED_DATA:
+            return {
+                ...state,
+                currentGroup: {
+                    ...state.currentGroup,
+                    displayedData: {
+                        dataType: action.dataType,
+                        data: action.data,
+                    }
+                }
+            }
+        case SET_GROUP_ID:
+            return {
+                ...state,
+                currentGroup: {
+                    groupID: action.id,
+                    groupName: null,
+                    description: null,
+                    userList: [],
+                    programList: [],
+                    getDataFilter: {
+                        displayType: {main: "table", sub: {value: "table", label: "Таблица"}},
+                        isSubSelectorDisabled: true,
+                        subDisplayOptions: [{value: "table", label: "Таблица"}],
+                        users: [],//list of checked users
+                        dateDelta: [new Date(), new Date()],// time interval which data will analyse
+                        programs: [], //list of analysing programs
+                        timeScale: {value: 1, label: "1 час"},//atom value of time
+                        tableFilter: {
+                            tableType: {value: "dataByUserProgram", label: "Данные по пользователю/программе"},
+                            title: {value: "user", label: "По пользователям"}
+                        }
+                    },
+                    displayedData: {
+                        dataType: null,
+                        data: null
+                    }
+                }
+            }
         default:
             return state;
     }
@@ -209,29 +254,38 @@ const displayFilterOptions = {
     graph: [{value: "linear", label: "Линейная"}]
 }
 
-const setGroupMainInfo = (groupData)=>({type:SET_GROUP_MAIN_INFO,groupData})
-const setGroupList = (groups)=>({type:SET_USER_LIST,groups})
+const setGroupMainInfo = (groupData) => ({type: SET_GROUP_MAIN_INFO, groupData})
+const setGroupList = (groups) => ({type: SET_USER_LIST, groups})
 export const addNewGroup = (name) => ({type: ADD_NEW_GROUP, name})
 export const setMainDisplayFilter = (mainType) => ({type: SET_MAIN_DISPLAY_FILTER, mainType})
 export const setSubDisplayFilter = (subType) => ({type: SET_SUB_DISPLAY_FILTER, subType})
-export const setTableType  =(tableType)=>({type:SET_TABLE_TYPE, tableType})
-export const setTableTitle  =(title)=>({type:SET_TABLE_TITLE, title})
-export const setTimeScale = (timeScale) =>({type:SET_TIME_SCALE, timeScale})
-export const setUserList = (userList) =>({type: SET_USER_LIST, userList})
-export const setProgramList = (programList) =>({type: SET_PROGRAM_LIST, programList})
-export const setDateDelta = (dateDelta)=>({type:SET_DATE_DELTA, dateDelta})
+export const setTableType = (tableType) => ({type: SET_TABLE_TYPE, tableType})
+export const setTableTitle = (title) => ({type: SET_TABLE_TITLE, title})
+export const setTimeScale = (timeScale) => ({type: SET_TIME_SCALE, timeScale})
+export const setUserList = (userList) => ({type: SET_USER_LIST, userList})
+export const setProgramList = (programList) => ({type: SET_PROGRAM_LIST, programList})
+export const setDateDelta = (dateDelta) => ({type: SET_DATE_DELTA, dateDelta})
+export const setDisplayedData = (data, dataType) => ({type: SET_DISPLAYED_DATA, data, dataType})
+export const setGroupId = (id)=>({type:SET_GROUP_ID,id})
 
 export const getMainInfo = (groupID) => async (dispatch) => {
 
-     groupAPI.getMainInfo(groupID).then((response)=>{
+    groupAPI.getMainInfo(groupID).then((response) => {
 
         dispatch(setGroupMainInfo(response.data));
     })
 }
-export const getGroups = ()=>async (dispatch)=>{
-     groupAPI.getGroups().then(response=>{
-         dispatch(setGroupList(response.data))
-     })
+export const getGroups = () => async (dispatch) => {
+    groupAPI.getGroups().then(response => {
+        dispatch(setGroupList(response.data))
+    })
+}
+
+export const getTableFromServer = (filter) => async (dispatch) => {
+    groupAPI.getTable(filter).then(response => {
+        dispatch(setDisplayedData(response.data, "table"))
+            .catch(() => dispatch(setDisplayedData(null, null)))
+    })
 }
 
 export default groupReducer;

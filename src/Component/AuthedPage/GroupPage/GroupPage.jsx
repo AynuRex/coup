@@ -5,14 +5,17 @@ import './GroupPage.css'
 import GroupHome from "./GroupHome";
 import GroupsGetDataPage from "./GroupGetDataPage";
 import {connect} from "react-redux";
-import {getMainInfo} from "../../../Redux/group-reducer";
+import {getMainInfo, setGroupId} from "../../../Redux/group-reducer";
 
 const GroupPage = (props) =>{
 
     const [displayedMenuContent, setDisplayedMenuContent] = useState("main")
+
+
     //get data when page was loaded
     useEffect(()=>{
-       props.getMainInfo(props.match.params.groupID)
+        props.setGroupId(props.match.params.groupID)
+        props.getMainInfo(props.match.params.groupID)
     },[])
 
         return<div style={{padding:"10px 30px"}}>
@@ -54,4 +57,4 @@ const mapStateToProps=(state)=>{
 }
 
 
-export default compose(connect(mapStateToProps,{getMainInfo}),withRouter)(GroupPage)
+export default compose(connect(mapStateToProps,{getMainInfo,setGroupId}),withRouter)(GroupPage)

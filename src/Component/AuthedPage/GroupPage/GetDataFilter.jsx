@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import Select from "react-select";
 import "./GroupPage.css"
 import {
+    getTableFromServer,
     setDateDelta,
     setMainDisplayFilter, setProgramList,
     setSubDisplayFilter,
@@ -11,6 +12,7 @@ import {
 } from "../../../Redux/group-reducer";
 import {connect} from "react-redux";
 import DateRangePicker from "@wojtekmaj/react-daterange-picker";
+import {groupAPI} from "../../../api/api";
 
 
 const mainDisplayTypeOptions = [
@@ -32,12 +34,12 @@ const dataByGroupOptions =[
     {value:"group", label: "По группе"}
 ]
 const timeScaleOptions = [
-    {value: "1 hour", label: "1 час"},
-    {value: "2 hour", label: "2 часа"},
-    {value: "4 hour", label: "4 часа"},
-    {value: "6 hour", label: "6 часов"},
-    {value: "12 hour", label: "12 часов"},
-    {value: "1 day", label: "1 сутки"},
+    {value: 1, label: "1 час"},
+    {value: 2, label: "2 часа"},
+    {value: 4, label: "4 часа"},
+    {value: 6, label: "6 часов"},
+    {value: 12, label: "12 часов"},
+    {value: 24, label: "1 сутки"},
 ]
 
 
@@ -77,6 +79,7 @@ const GetDataFilter = (props) => {
 const ConcreteFilter = (props) => {
 
     const [titleOptions,setTitleOptions] = useState(dataByUserProgramOptions)
+    const [displayedData,setDisplayedData] = useState(null);
     const userOptions = props.currentGroup.userList.map((user)=>({value:user, label:user.login}))
     const programOptions = props.currentGroup.programList.map((prog)=>({value:prog, label:prog}))
     const onTableTypeChanged = (obj)=>{
@@ -88,6 +91,28 @@ const ConcreteFilter = (props) => {
             setTitleOptions(dataByGroupOptions)
     }
 
+
+
+    const onTableRequest = ()=>{
+
+        const sendingFilterData = {
+            groupID: props.currentGroup.groupID,
+            users:  props.currentGroup.getDataFilter.users,
+            dateDelta:  props.currentGroup.getDataFilter.dateDelta,
+            programs:  props.currentGroup.getDataFilter.programs,
+            timeScale:  props.currentGroup.getDataFilter.timeScale.value,
+            tableFilter:{
+                tableType: props.currentGroup.getDataFilter.tableFilter.tableType.value,
+                title: props.currentGroup.getDataFilter.tableFilter.title.value
+            }
+        }
+        debugger
+        if(sendingFilterData.tableFilter.title==="user")
+            sendingFilterData.users=sendingFilterData.users[0]
+        else
+            sendingFilterData.programs=sendingFilterData.programs[0]
+        props.getTableFromServer(sendingFilterData);
+}
 
     switch (props.currentGroup.getDataFilter.displayType.sub.value) {
         case "table":
@@ -121,20 +146,24 @@ const ConcreteFilter = (props) => {
                     <DateRangePicker
                         onChange={props.setDateDelta}
                         value={props.currentGroup.getDataFilter.dateDelta}/>
+                    <button onClick={onTableRequest}>
+                        Получить данные
+                    </button>
                 </div>)
-
+        default:
+            return null
     }
-    return null
+
 }
 
 
 const mapStateToProps = (state) => {
     return {
-        currentGroup: state.groupPage.currentGroup
+        currentGroup: state.groupPage.currentGroup,
     }
 }
 export default connect(mapStateToProps,
     {setMainDisplayFilter, setSubDisplayFilter,
     setTableType,setTableTitle,setTimeScale, setUserList, setProgramList,
-        setDateDelta
+        setDateDelta,getTableFromServer
 })(GetDataFilter)

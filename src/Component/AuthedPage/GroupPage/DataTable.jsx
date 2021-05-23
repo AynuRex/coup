@@ -1,32 +1,7 @@
 import React from "react";
 import {useTable} from "react-table";
 
-
-const columns = [{
-    Header:"ID",
-    accessor: "id"
-},{
-    Header: "Value",
-    accessor: "value"
-}
-]
-const data = [
-    {
-        id:1,
-        value:3
-    }, {
-        id:2,
-        value:4
-    }, {
-        id:3,
-        value:5
-    }, {
-        id:4,
-        value:6
-    },
-]
-
-const DataTable = (props) => {
+const DataTable = ({columns,data}) => {
 
 
     const tableInstance = useTable(

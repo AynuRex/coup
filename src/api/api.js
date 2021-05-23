@@ -14,7 +14,12 @@ export const groupAPI =
         },
         getGroups(){
             return instance.get('groups/getGroupList')
+        },
+        getTable(filters)
+        {
+            return instance.post('groups/getTable',filters)
         }
+
     }
 
 export const authAPI = {
