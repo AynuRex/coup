@@ -277,7 +277,10 @@ export const getMainInfo = (groupID) => async (dispatch) => {
 }
 export const getGroups = () => async (dispatch) => {
     groupAPI.getGroups().then(response => {
-        dispatch(setGroupList(response.data))
+        const GroupList = response.data.map(e=>({...e,
+                        creationDate:new Date(e.creationDate)}
+        ))
+        dispatch(setGroupList(GroupList))
     })
 }
 
