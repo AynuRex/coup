@@ -95,22 +95,23 @@ const ConcreteFilter = (props) => {
 
     const onTableRequest = ()=>{
 
+        
         const sendingFilterData = {
             groupID: props.currentGroup.groupID,
-            users:  props.currentGroup.getDataFilter.users,
+            users:  props.currentGroup.getDataFilter.users.map(e=>e.value.id),
             dateDelta:  props.currentGroup.getDataFilter.dateDelta.map(date=>date.valueOf()),
-            programs:  props.currentGroup.getDataFilter.programs,
+            programs:  props.currentGroup.getDataFilter.programs.map(e=>e.value),
             timeScale:  props.currentGroup.getDataFilter.timeScale.value,
             tableFilter:{
                 tableType: props.currentGroup.getDataFilter.tableFilter.tableType.value,
                 title: props.currentGroup.getDataFilter.tableFilter.title.value
             }
         }
-        debugger
+        
         if(sendingFilterData.tableFilter.title==="user")
             sendingFilterData.users=sendingFilterData.users[0]
         else
-            sendingFilterData.programs=sendingFilterData.programs[0]
+            sendingFilterData.programs=sendingFilterData.programs[0]        
         props.getTableFromServer(sendingFilterData);
 }
 
@@ -137,11 +138,13 @@ const ConcreteFilter = (props) => {
                             value={props.currentGroup.getDataFilter.users}
                             onChange = {(obj)=>props.setUserList(obj)}
                             placeholder = "Выбор пользователей"
+                            isMulti
                     />
                     <Select options={programOptions}
                             value={props.currentGroup.getDataFilter.programs}
                             onChange = {(obj)=>props.setProgramList(obj)}
                             placeholder = "Выбор программ"
+                            isMulti
                     />
                     <DateRangePicker
                         onChange={props.setDateDelta}

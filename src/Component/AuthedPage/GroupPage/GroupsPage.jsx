@@ -240,8 +240,6 @@ const Group = ({groupInfo}) => {
         )
     }
 
-
-
     return (
         <div className="group-form-container" onClick={onClickOnGroup}>
             <div className="group-form-name"> {groupInfo.name}</div>

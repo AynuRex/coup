@@ -1,8 +1,7 @@
 import React from "react";
 import {useTable} from "react-table";
 
-const DataTable = ({columns,data}) => {
-
+const DataTable = ({columns,data}) => {    
 
     const tableInstance = useTable(
         {

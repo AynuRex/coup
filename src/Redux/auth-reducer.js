@@ -13,7 +13,6 @@ const authReducer = (state = initialState, action)=>{
                 isAuth: true
             }
             case LOGOUT:
-                debugger
             return {
                 ...state,
                 isAuth: false

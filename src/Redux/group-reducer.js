@@ -38,7 +38,10 @@ let initialState = {
         },
         displayedData: {
             dataType: null,
-            data: null
+            data: {
+                Columns:[],
+                data:[]
+            }
         }
 
     },
@@ -108,11 +111,11 @@ const groupReducer = (state = initialState, action) => {
 
         }
         case SET_GROUP_MAIN_INFO: {
+            
             return {
                 ...state,
                 currentGroup: {
-                    ...state.currentGroup,
-                    groupID: action.groupData.groupID,
+                    ...state.currentGroup,                   
                     groupName: action.groupData.groupName,
                     description: action.groupData.description,
                     userList: [...action.groupData.userList],
@@ -255,7 +258,7 @@ const displayFilterOptions = {
 }
 
 const setGroupMainInfo = (groupData) => ({type: SET_GROUP_MAIN_INFO, groupData})
-const setGroupList = (groups) => ({type: SET_USER_LIST, groups})
+const setGroupList = (groups) => ({type: SET_GROUP_LIST, groups})
 export const addNewGroup = (name) => ({type: ADD_NEW_GROUP, name})
 export const setMainDisplayFilter = (mainType) => ({type: SET_MAIN_DISPLAY_FILTER, mainType})
 export const setSubDisplayFilter = (subType) => ({type: SET_SUB_DISPLAY_FILTER, subType})
@@ -270,6 +273,7 @@ export const setGroupId = (id)=>({type:SET_GROUP_ID,id})
 
 export const getMainInfo = (groupID) => async (dispatch) => {
 
+
     groupAPI.getMainInfo(groupID).then((response) => {
 
         dispatch(setGroupMainInfo(response.data));
@@ -278,7 +282,7 @@ export const getMainInfo = (groupID) => async (dispatch) => {
 export const getGroups = () => async (dispatch) => {
     groupAPI.getGroups().then(response => {
         const GroupList = response.data.map(e=>({...e,
-                        creationDate:new Date(e.creationDate)}
+                        creationDate:new Date(e.creationDate * 1000)}
         ))
         dispatch(setGroupList(GroupList))
     })
@@ -287,7 +291,7 @@ export const getGroups = () => async (dispatch) => {
 export const getTableFromServer = (filter) => async (dispatch) => {
     groupAPI.getTable(filter).then(response => {
         dispatch(setDisplayedData(response.data, "table"))
-            .catch(() => dispatch(setDisplayedData(null, null)))
+            //.catch(() => dispatch(setDisplayedData(null, null)))
     })
 }
 
