@@ -98,7 +98,7 @@ const ConcreteFilter = (props) => {
         const sendingFilterData = {
             groupID: props.currentGroup.groupID,
             users:  props.currentGroup.getDataFilter.users,
-            dateDelta:  props.currentGroup.getDataFilter.dateDelta,
+            dateDelta:  props.currentGroup.getDataFilter.dateDelta.map(date=>date.valueOf()),
             programs:  props.currentGroup.getDataFilter.programs,
             timeScale:  props.currentGroup.getDataFilter.timeScale.value,
             tableFilter:{
